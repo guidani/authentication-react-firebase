@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 
-const SignIn = () => {
+const ForgotPassword = () => {
   const auth = useAuth();
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate()
+  const [successMessage, setSuccessMessage] = useState(null);
 
   function handleChange(e) {
     const { value, name } = e.target;
@@ -22,34 +21,37 @@ const SignIn = () => {
   async function submitForm(e) {
     e.preventDefault();
     try {
+      setSuccessMessage("");
       setErrorMessage("");
-      setLoading(true);
-      await auth.login(formData["email"], formData["password"]);
-      setLoading(false);
-      navigate('/', {replace: true})
-      // console.log(resp);
+      await auth.resetPassword(formData["email"]);
+      setSuccessMessage(
+        "O link para resetar sua senha foi enviado para o seu e-mail!"
+      );
     } catch (error) {
-      setErrorMessage("Não foi possível entrar!");
-      // console.log(error);
+      setErrorMessage("Não foi possível resetar a senha!");
+      console.log(error);
     }
-    // console.log(formData);
   }
 
-  if(auth?.currentUser){
-    return <Navigate replace to={"/"}/>
+  if (auth?.currentUser) {
+    return <Navigate replace to={"/"} />;
   }
-
   return (
     <>
       <div className="container">
         <div className="form-container">
           <div className="form-header">
-            <h1>ENTRAR</h1>
+            <h1>REDEFINIÇÃO DE SENHA</h1>
           </div>
           <div className="form-body">
-          {errorMessage ? (
+            {errorMessage ? (
               <>
                 <p style={{ color: "red" }}>{errorMessage}</p>
+              </>
+            ) : null}
+            {successMessage ? (
+              <>
+                <p style={{ color: "green" }}>{successMessage}</p>
               </>
             ) : null}
             <form onSubmit={submitForm}>
@@ -64,23 +66,12 @@ const SignIn = () => {
                   required
                 />
               </div>
-              <div className="input-group">
-                <label htmlFor="password">Senha:</label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  placeholder="******"
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <button type="submit">Entrar</button>
+
+              <button type="submit">RESET</button>
             </form>
           </div>
           <div className="form-footer">
-            <p>Não possui uma conta? </p> <Link to="/signup">Cadastrar</Link>
-            <p>Esqueceu a senha? <Link to={"/forgot-password"}>Redefinir a senha</Link> </p>
+            <Link to="/signin">Entrar</Link>
           </div>
         </div>
       </div>
@@ -89,4 +80,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default ForgotPassword;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 
 const SignUp = () => {
@@ -7,7 +7,7 @@ const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const auth = useAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function handleChange(e) {
     const { value, name } = e.target;
@@ -30,17 +30,23 @@ const SignUp = () => {
       setLoading(true);
       await auth.signup(formData["email"], formData["password"]);
       setLoading(false);
-      navigate("/signin")
+      navigate("/signin");
       // console.log(resp);
     } catch (error) {
       setErrorMessage("Não foi possível criar a conta");
-      console.log(error)
+      console.log(error);
     }
+  }
+
+  if (auth?.currentUser) {
+    return <Navigate replace to={"/"} />;
   }
 
   return (
     <>
-    {auth?.currentUser ? (alert(`Usuário criado com o ID ${auth?.currentUser?.uid}`)) : (null)}
+      {auth?.currentUser
+        ? alert(`Usuário criado com o ID ${auth?.currentUser?.uid}`)
+        : null}
       <div className="container">
         <div className="form-container">
           <div className="form-header">
@@ -75,7 +81,7 @@ const SignUp = () => {
                   required
                 />
               </div>
-              
+
               <div className="input-group">
                 <label htmlFor="repassword">Digite a senha novamente:</label>
                 <input
@@ -87,9 +93,7 @@ const SignUp = () => {
                   required
                 />
               </div>
-              <button type="submit">
-                Cadastrar
-              </button>
+              <button type="submit">Cadastrar</button>
             </form>
           </div>
           <div className="form-footer">

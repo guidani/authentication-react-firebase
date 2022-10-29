@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 
 const SignIn = () => {
@@ -33,6 +33,10 @@ const SignIn = () => {
       // console.log(error);
     }
     // console.log(formData);
+  }
+
+  if(auth?.currentUser){
+    return <Navigate replace to={"/"}/>
   }
 
   return (

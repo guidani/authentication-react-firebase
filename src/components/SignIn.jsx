@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 
 const SignIn = () => {
   const auth = useAuth();
+  const location = useLocation();
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
 
   function handleChange(e) {
     const { value, name } = e.target;
@@ -26,13 +28,10 @@ const SignIn = () => {
       setLoading(true);
       await auth.login(formData["email"], formData["password"]);
       setLoading(false);
-      navigate('/', {replace: true})
-      // console.log(resp);
+      navigate(from, { replace: true });
     } catch (error) {
       setErrorMessage("Não foi possível entrar!");
-      // console.log(error);
     }
-    // console.log(formData);
   }
 
   // if(auth?.currentUser){
@@ -47,7 +46,7 @@ const SignIn = () => {
             <h1>ENTRAR</h1>
           </div>
           <div className="form-body">
-          {errorMessage ? (
+            {errorMessage ? (
               <>
                 <p style={{ color: "red" }}>{errorMessage}</p>
               </>
@@ -80,7 +79,10 @@ const SignIn = () => {
           </div>
           <div className="form-footer">
             <p>Não possui uma conta? </p> <Link to="/signup">Cadastrar</Link>
-            <p>Esqueceu a senha? <Link to={"/forgot-password"}>Redefinir a senha</Link> </p>
+            <p>
+              Esqueceu a senha?{" "}
+              <Link to={"/forgot-password"}>Redefinir a senha</Link>{" "}
+            </p>
           </div>
         </div>
       </div>

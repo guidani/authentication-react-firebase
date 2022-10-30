@@ -11,28 +11,20 @@ import PrivateRoute from "./PrivateRoute";
 const Router = () => {
   return (
     <Routes>
-      {/* Rotas privadas */}
-      <Route
-        path="/"
-        element={
-          <PrivateRoute>
-            <Dashboard />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/admin"
-        element={
-          <PrivateRoute>
-            <AdminPage />
-          </PrivateRoute>
-        }
-      />
       {/* Rotas Públicas */}
-      <Route path="/signup" element={<SignUpPage />} />
+      <Route index path="/signup" element={<SignUpPage />} />
       <Route path="/signin" element={<SignInPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/unauthorized" element={<h1>Não autorizado</h1>} />
       <Route path="*" element={<ErrorPage />} />
+
+      {/* Rotas privadas */}
+      <Route element={<PrivateRoute allowedRoles={["student"]}/>} >
+        <Route path="/" element={<Dashboard />} />
+      </Route>
+      <Route element={<PrivateRoute allowedRoles={["admin"]}/>} >
+        <Route path="/admin" element={<AdminPage />} />
+      </Route>
     </Routes>
   );
 };

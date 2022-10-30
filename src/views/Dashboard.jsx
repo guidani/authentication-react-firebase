@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 
 const Dashboard = () => {
   const auth = useAuth();
   const user = auth?.currentUser;
+  const userRoles = auth?.loggedUserRoles;
   const [errorMessage, setErrorMessage] = useState("");
   const [userData, setUserData] = useState({
     displayName: "",
@@ -27,7 +28,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (user !== null) {
-      console.log(user);
+      // console.log(user);
       setUserData({
         displayName: user?.displayName,
         email: user?.email,
@@ -51,6 +52,10 @@ const Dashboard = () => {
       <p>email: {userData?.email}</p>
       <p>emailVerified: {userData?.emailVerified ? "Sim" : "Não"}</p>
       <p>uid: {userData?.uid}</p>
+      <p>Roles:</p>
+      {userRoles.map((u, i) => (
+        <span key={i}>{u}</span>
+      ))}
       <br />
       <button onClick={handleLogout}>Sair</button>
     </div>

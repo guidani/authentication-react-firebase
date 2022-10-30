@@ -39,15 +39,12 @@ const AuthProvider = ({ children }) => {
       const res = await signInWithEmailAndPassword(auth, email, password);
       const user = res?.user;
       const userid = user?.uid;
-
       // get user doc from firestore
       const q = query(collection(db, "users"), where("userid", "==", userid));
-
       const querySnapshot = await getDocs(q);
       await querySnapshot.forEach((doc) => {
         const userData = doc.data();
-        userData?.roles.forEach((i) => setLoggedUserRoles([i]));
-
+        userData?.roles?.forEach((role) => setLoggedUserRoles([role]));
       });
     } catch (error) {
       console.log(error);

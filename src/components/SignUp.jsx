@@ -1,6 +1,8 @@
+import { addDoc, collection } from "firebase/firestore";
 import React, { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
+import { db } from "../firebase/config";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
@@ -29,6 +31,15 @@ const SignUp = () => {
       setErrorMessage("");
       setLoading(true);
       await auth.signup(formData["email"], formData["password"]);
+      // Adicionando usuário no firestore
+      const fakeUser = {
+        email: formData['email'],
+        roles: ['student']
+      }
+      const collectionRef = await collection(db, 'users')
+      const userRef = await addDoc(collectionRef, fakeUser)
+      console.log(userRef);
+      //
       setLoading(false);
       navigate("/signin");
       // console.log(resp);

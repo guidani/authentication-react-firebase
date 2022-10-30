@@ -28,6 +28,7 @@ const SignIn = () => {
       setLoading(true);
       await auth.login(formData["email"], formData["password"]);
       setLoading(false);
+      console.log(from)
       navigate(from, { replace: true });
     } catch (error) {
       setErrorMessage("Não foi possível entrar!");

@@ -35,9 +35,9 @@ const SignIn = () => {
     // console.log(formData);
   }
 
-  if(auth?.currentUser){
-    return <Navigate replace to={"/"}/>
-  }
+  // if(auth?.currentUser){
+  //   return <Navigate replace to={"/"}/>
+  // }
 
   return (
     <>

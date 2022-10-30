@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 
 const ForgotPassword = () => {
@@ -33,9 +33,9 @@ const ForgotPassword = () => {
     }
   }
 
-  if (auth?.currentUser) {
-    return <Navigate replace to={"/"} />;
-  }
+  // if (auth?.currentUser) {
+  //   return <Navigate to={"/"} />;
+  // }
   return (
     <>
       <div className="container">

@@ -31,15 +31,6 @@ const SignUp = () => {
       setErrorMessage("");
       setLoading(true);
       await auth.signup(formData["email"], formData["password"]);
-      // Adicionando usuário no firestore
-      const fakeUser = {
-        email: formData['email'],
-        roles: ['student']
-      }
-      const collectionRef = await collection(db, 'users')
-      const userRef = await addDoc(collectionRef, fakeUser)
-      console.log(userRef);
-      //
       setLoading(false);
       navigate("/signin");
       // console.log(resp);
@@ -49,15 +40,15 @@ const SignUp = () => {
     }
   }
 
-  if (auth?.currentUser) {
-    return <Navigate replace to={"/"} />;
-  }
+  // if (auth?.currentUser) {
+  //   return <Navigate replace to={"/"} />;
+  // }
 
   return (
     <>
-      {auth?.currentUser
+      {/* {auth?.currentUser
         ? alert(`Usuário criado com o ID ${auth?.currentUser?.uid}`)
-        : null}
+        : null} */}
       <div className="container">
         <div className="form-container">
           <div className="form-header">

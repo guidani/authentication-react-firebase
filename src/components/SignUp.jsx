@@ -1,8 +1,6 @@
-import { addDoc, collection } from "firebase/firestore";
 import React, { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
-import { db } from "../firebase/config";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
@@ -32,8 +30,7 @@ const SignUp = () => {
       setLoading(true);
       await auth.signup(formData["email"], formData["password"]);
       setLoading(false);
-      navigate("/signin");
-      // console.log(resp);
+      navigate("/");
     } catch (error) {
       setErrorMessage("Não foi possível criar a conta");
       console.log(error);
@@ -46,9 +43,6 @@ const SignUp = () => {
 
   return (
     <>
-      {/* {auth?.currentUser
-        ? alert(`Usuário criado com o ID ${auth?.currentUser?.uid}`)
-        : null} */}
       <div className="container">
         <div className="form-container">
           <div className="form-header">
@@ -99,7 +93,7 @@ const SignUp = () => {
             </form>
           </div>
           <div className="form-footer">
-            <p>Já possui uma conta? </p> <Link to="/signin">Sign In</Link>
+            <p>Já possui uma conta? </p> <Link to="/">Sign In</Link>
           </div>
         </div>
       </div>

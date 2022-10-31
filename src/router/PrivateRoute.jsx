@@ -5,7 +5,6 @@ import { useAuth } from "../contexts/authContext";
 const PrivateRoute = ({ allowedRoles }) => {
   const { loggedUserRoles } = useAuth();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
 
   const content = loggedUserRoles.some((role) =>
     allowedRoles.includes(role)

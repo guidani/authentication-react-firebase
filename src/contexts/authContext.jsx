@@ -5,9 +5,10 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { db, firebaseAuth as auth } from "../firebase/config";
+import { saveUserToDatabase } from "../firebase/saveUserToDatabase";
 
 const AuthContext = createContext();
 
@@ -23,12 +24,7 @@ const AuthProvider = ({ children }) => {
       const res = await createUserWithEmailAndPassword(auth, email, password);
       const user = res?.user;
       // Adiciona usuario no banco de dados
-      const collectionRef = await collection(db, "users");
-      await addDoc(collectionRef, {
-        email: email,
-        roles: ["student"],
-        userid: user?.uid,
-      });
+      await saveUserToDatabase(email, user.id);
     } catch (error) {
       console.log(error);
     }

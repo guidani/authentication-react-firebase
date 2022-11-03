@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 
 const ForgotPassword = () => {
   const auth = useAuth();
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState(null);
+
 
   function handleChange(e) {
     const { value, name } = e.target;
@@ -21,14 +20,9 @@ const ForgotPassword = () => {
   async function submitForm(e) {
     e.preventDefault();
     try {
-      setSuccessMessage("");
-      setErrorMessage("");
-      await auth.resetPassword(formData["email"]);
-      setSuccessMessage(
-        "O link para resetar sua senha foi enviado para o seu e-mail!"
-      );
+      return await auth?.resetPassword(formData["email"]);
+      
     } catch (error) {
-      setErrorMessage("Não foi possível resetar a senha!");
       console.log(error);
     }
   }
@@ -44,16 +38,7 @@ const ForgotPassword = () => {
             <h1>REDEFINIÇÃO DE SENHA</h1>
           </div>
           <div className="form-body">
-            {errorMessage ? (
-              <>
-                <p style={{ color: "red" }}>{errorMessage}</p>
-              </>
-            ) : null}
-            {successMessage ? (
-              <>
-                <p style={{ color: "green" }}>{successMessage}</p>
-              </>
-            ) : null}
+           
             <form onSubmit={submitForm}>
               <div className="input-group">
                 <label htmlFor="email">Email:</label>

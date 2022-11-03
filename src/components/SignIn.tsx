@@ -24,12 +24,10 @@ const SignIn = () => {
   async function submitForm(e) {
     e.preventDefault();
     try {
-      setErrorMessage("");
-      setLoading(true);
-      await auth.login(formData["email"], formData["password"]);
-      setLoading(false);
-      console.log(from)
-      navigate(from, { replace: true });
+      await auth?.login(formData["email"], formData["password"]);
+      if(auth?.currentUser){
+        navigate('/dashboard')
+      }
     } catch (error) {
       setErrorMessage("Não foi possível entrar!");
     }

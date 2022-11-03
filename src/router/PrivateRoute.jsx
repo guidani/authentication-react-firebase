@@ -1,28 +1,15 @@
-import React from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 
-const PrivateRoute = ({ allowedRoles }) => {
-  const { loggedUserRoles } = useAuth();
-  const location = useLocation();
+const PrivateRoute = ({ children }) => {
+  const auth = useAuth();
 
-  const content = loggedUserRoles.some((role) =>
-    allowedRoles.includes(role)
-  ) ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/" state={{ from: location }} replace />
-  );
+  useEffect(() => {
+    console.log("olá");
+  }, []);
 
-  return content;
-
-  // return auth?.loggedUserRoles?.find((role) => allowedRoles?.includes(role)) ? (
-  //   <Outlet />
-  // ) : (
-  //   <Navigate to={from} state={{ from: location }} replace />
-  // );
-
-  // return auth?.currentUser ? children : <Navigate to={"/signin"} state={{ from: location}} replace/>;
+  return auth?.currentUser ? children : <Navigate to={"/signin"} />;
 };
 
 export default PrivateRoute;

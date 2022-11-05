@@ -7,9 +7,7 @@ const SignIn = () => {
   const location = useLocation();
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const from = location.state?.from?.pathname || "/";
 
   function handleChange(e) {
     const { value, name } = e.target;
@@ -25,18 +23,13 @@ const SignIn = () => {
     e.preventDefault();
     try {
       await auth?.login(formData["email"], formData["password"]);
-      if(auth?.currentUser){
-        navigate('/dashboard')
+      if (auth?.currentUser) {
+        navigate("/dashboard");
       }
     } catch (error) {
       setErrorMessage("Não foi possível entrar!");
     }
   }
-
-  // if(auth?.currentUser){
-  //   return <Navigate replace to={"/"}/>
-  // }
-
   return (
     <>
       <div className="container">

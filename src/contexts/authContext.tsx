@@ -7,7 +7,6 @@ import {
 } from "firebase/auth";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { firebaseAuth as auth } from "../firebase/config";
-import { getUserFromDatabase } from "../firebase/getUserFromDatabase";
 import { saveUserToDatabase } from "../firebase/saveUserToDatabase";
 
 interface IAuthContext {
@@ -15,7 +14,13 @@ interface IAuthContext {
   login: Function;
   logOut: Function;
   resetPassword: Function;
-  currentUser: {}
+  currentUser: {
+    displayName?: string;
+    email?: string;
+    photoURL?: string;
+    emailVerified?: string;
+    uid?: string;
+  };
 }
 
 const AuthContext = createContext<IAuthContext | null>(null);
@@ -40,25 +45,27 @@ const AuthProvider = ({ children }) => {
       });
   }
 
-  function login(email: string, password: string) {
+  async function login(email: string, password: string) {
     try {
-      return signInWithEmailAndPassword(auth, email, password).then((resp) => {
-        setCurrentUser(resp);
-        const user = resp?.user;
-        const userid = user?.uid;
-        getUserFromDatabase(userid).then((resp) => console.log(resp));
-      });
+      const credential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      setCurrentUser(credential);
+      localStorage.setItem("u", JSON.stringify(credential));
+      return true;
     } catch (error) {
-      console.log(error);
-      return null;
+      return console.error(error);
     }
   }
 
-  function logOut() {
-    return signOut(auth);
+  async function logOut() {
+    await signOut(auth);
+    localStorage.removeItem("u");
   }
 
-  function resetPassword(email) {
+  function resetPassword(email: string) {
     return sendPasswordResetEmail(auth, email);
   }
 

@@ -4,8 +4,6 @@ import { useAuth } from "../contexts/authContext";
 
 const Dashboard = () => {
   const auth = useAuth();
-  const user = auth?.currentUser;
-  const userRoles = auth?.loggedUserRoles;
   const [errorMessage, setErrorMessage] = useState("");
   const [userData, setUserData] = useState({
     displayName: "",
@@ -19,25 +17,13 @@ const Dashboard = () => {
   async function handleLogout() {
     setErrorMessage("");
     try {
-      await auth.logOut();
-      navigate("/signin");
+      await auth?.logOut();
+      navigate("/");
     } catch (error) {
       setErrorMessage("Não foi possível sair!!!");
     }
   }
 
-  useEffect(() => {
-    if (user !== null) {
-      // console.log(user);
-      setUserData({
-        displayName: user?.displayName,
-        email: user?.email,
-        photoURL: user?.photoURL,
-        emailVerified: user?.emailVerified,
-        uid: user?.uid,
-      });
-    }
-  }, []);
 
   return (
     <div>
@@ -53,9 +39,6 @@ const Dashboard = () => {
       <p>emailVerified: {userData?.emailVerified ? "Sim" : "Não"}</p>
       <p>uid: {userData?.uid}</p>
       <p>Roles:</p>
-      {userRoles.map((u, i) => (
-        <span key={i}>{u}</span>
-      ))}
       <br />
       <button onClick={handleLogout}>Sair</button>
     </div>

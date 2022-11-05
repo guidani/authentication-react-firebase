@@ -56,7 +56,7 @@ const ForgotPassword = () => {
             </form>
           </div>
           <div className="form-footer">
-            <Link to="/signin">Entrar</Link>
+            <Link to="/">Entrar</Link>
           </div>
         </div>
       </div>
